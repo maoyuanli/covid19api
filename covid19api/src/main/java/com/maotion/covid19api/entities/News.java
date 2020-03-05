@@ -2,11 +2,11 @@ package com.maotion.covid19api.entities;
 
 public class News {
     private String source;
-    private String headline;
+    private String title;
 
-    public News(String source, String headline) {
+    public News(String source, String title) {
         this.source = source;
-        this.headline = headline;
+        this.title = title;
     }
 
     public String getSource() {
@@ -17,11 +17,11 @@ public class News {
         this.source = source;
     }
 
-    public String getHeadline() {
-        return headline;
+    public String getTitle() {
+        return title;
     }
 
-    public void setHeadline(String headline) {
-        this.headline = headline;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
