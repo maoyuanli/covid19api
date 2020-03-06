@@ -10,8 +10,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 class TrackerControllerTest {
@@ -44,7 +42,7 @@ class TrackerControllerTest {
                 "}";
 
         String expectResContent = "{provinceOrState: Utopia, countryOrRegion: Atlantis, " +
-                "lastUpdated: 2020-03-04, confirmed: 332, deaths:12, recovered: 20, " +
+                "lastUpdated: \"2020-03-04T12:53:03\", confirmed: 332, deaths:12, recovered: 20, " +
                 "latitude:30.9756, longitude: 139.638}";
 
         RequestTestTemplate.testMvcRequest(webApplicationContext,url,reportJson,

@@ -3,7 +3,6 @@ package com.maotion.covid19api.controllers;
 import com.maotion.covid19api.entities.Stats;
 import com.maotion.covid19api.services.TrackerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

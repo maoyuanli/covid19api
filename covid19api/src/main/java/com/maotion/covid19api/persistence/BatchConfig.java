@@ -1,6 +1,6 @@
 package com.maotion.covid19api.persistence;
 
-import com.maotion.covid19api.entities.Domain;
+import com.maotion.covid19api.entities.Case;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -21,8 +21,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 @EnableBatchProcessing
 @Configuration
 public class BatchConfig {
+
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
+
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
@@ -37,31 +39,32 @@ public class BatchConfig {
 
     @Bean
     public Step step1() {
-        return stepBuilderFactory.get("step1").<Domain, Domain>chunk(10).reader(reader())
+        return stepBuilderFactory.get("step1").<Case,Case>chunk(10).reader(reader())
                 .writer(writer()).build();
     }
 
     @Bean
-    public FlatFileItemReader<Domain> reader() {
-        FlatFileItemReader<Domain> reader = new FlatFileItemReader<>();
-        reader.setResource(new ClassPathResource("sample-data.csv"));
-        reader.setLineMapper(new DefaultLineMapper<Domain>() {{
+    public FlatFileItemReader<Case> reader() {
+        FlatFileItemReader<Case> reader = new FlatFileItemReader<>();
+        reader.setResource(new ClassPathResource("daily-data.csv"));
+        reader.setLineMapper(new DefaultLineMapper<Case>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
-                setNames(new String[]{"id", "name"});
+                setNames(new String[]{"provinceOrState", "countryOrRegion", "lastUpdated",
+                        "confirmed", "deaths", "recovered", "latitude", "longitude"});
 
             }});
-            setFieldSetMapper(new BeanWrapperFieldSetMapper<Domain>() {{
-                setTargetType(Domain.class);
+            setFieldSetMapper(new BeanWrapperFieldSetMapper<Case>() {{
+                setTargetType(Case.class);
             }});
         }});
         return reader;
     }
 
     @Bean
-    public MongoItemWriter<Domain> writer() {
-        MongoItemWriter<Domain> writer = new MongoItemWriter<Domain>();
+    public MongoItemWriter<Case> writer() {
+        MongoItemWriter<Case> writer = new MongoItemWriter<Case>();
         writer.setTemplate(mongoTemplate);
-        writer.setCollection("domain");
+        writer.setCollection("stats");
         return writer;
     }
 }

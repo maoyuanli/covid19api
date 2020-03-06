@@ -1,27 +1,24 @@
 package com.maotion.covid19api.entities;
 
 
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "stats")
 public class Stats {
+
     @Id
     private String id;
-
     private String provinceOrState;
     @Indexed(direction = IndexDirection.ASCENDING)
     private String countryOrRegion;
-    private LocalDate lastUpdated;
+    private String lastUpdated;
     private Long confirmed;
     private Long deaths;
     private Long recovered;
@@ -29,11 +26,8 @@ public class Stats {
     private Double longitude;
     private List<News> news = new ArrayList<>();
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
     @PersistenceConstructor
-    public Stats(String provinceOrState, String countryOrRegion, LocalDate lastUpdated, Long confirmed, Long deaths, Long recovered, Double latitude, Double longitude, List<News> news) {
+    public Stats(String provinceOrState, String countryOrRegion, String lastUpdated, Long confirmed, Long deaths, Long recovered, Double latitude, Double longitude, List<News> news) {
         this.provinceOrState = provinceOrState;
         this.countryOrRegion = countryOrRegion;
         this.lastUpdated = lastUpdated;
@@ -45,7 +39,6 @@ public class Stats {
         if (news != null) {
             this.news = news;
         }
-
     }
 
     public String getProvinceOrState() {
@@ -64,11 +57,11 @@ public class Stats {
         this.countryOrRegion = countryOrRegion;
     }
 
-    public LocalDate getLastUpdated() {
+    public String getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(LocalDate lastUpdated) {
+    public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
