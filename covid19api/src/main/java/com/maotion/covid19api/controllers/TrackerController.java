@@ -14,17 +14,17 @@ public class TrackerController {
     private TrackerService trackerService;
 
     @Autowired
-    public TrackerController(TrackerService trackerService){
+    public TrackerController(TrackerService trackerService) {
         this.trackerService = trackerService;
     }
 
     @PostMapping("reportcase")
-    public Stats reportCase(@RequestBody Stats stats){
+    public Stats reportCase(@RequestBody Stats stats) {
         return this.trackerService.save(stats);
     }
 
     @GetMapping("getallcase")
-    public List<Stats> getAllCase(){
+    public List<Stats> getAllCase() {
         return this.trackerService.findAll();
     }
 

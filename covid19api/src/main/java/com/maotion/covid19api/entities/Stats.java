@@ -29,7 +29,8 @@ public class Stats {
     private Double longitude;
     private List<News> news = new ArrayList<>();
 
-    public Stats(){}
+    public Stats() {
+    }
 
     @PersistenceConstructor
     public Stats(String provinceOrState, String countryOrRegion, String lastUpdated, Long confirmed, Long deaths, Long recovered, Double latitude, Double longitude, List<News> news) {

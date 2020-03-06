@@ -13,15 +13,15 @@ public class TrackerService {
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    public TrackerService(MongoTemplate mongoTemplate){
+    public TrackerService(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
-    public Stats save(Stats stats){
+    public Stats save(Stats stats) {
         return mongoTemplate.save(stats);
     }
 
-    public List<Stats> findAll(){
+    public List<Stats> findAll() {
         return mongoTemplate.findAll(Stats.class);
     }
 }

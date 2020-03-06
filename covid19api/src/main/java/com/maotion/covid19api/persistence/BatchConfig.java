@@ -41,7 +41,7 @@ public class BatchConfig {
 
     @Bean
     public Step step1() {
-        return stepBuilderFactory.get("step1").<Stats,Stats>chunk(10).reader(reader())
+        return stepBuilderFactory.get("step1").<Stats, Stats>chunk(10).reader(reader())
                 .writer(writer()).build();
     }
 

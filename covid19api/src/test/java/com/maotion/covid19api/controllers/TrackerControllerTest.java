@@ -45,17 +45,17 @@ class TrackerControllerTest {
                 "lastUpdated: \"2020-03-04T12:53:03\", confirmed: 332, deaths:12, recovered: 20, " +
                 "latitude:30.9756, longitude: 139.638}";
 
-        RequestTestTemplate.testMvcRequest(webApplicationContext,url,reportJson,
-                200,expectResContent,false);
+        RequestTestTemplate.testMvcRequest(webApplicationContext, url, reportJson,
+                200, expectResContent, false);
     }
 
     @Test
     public void testGetAllCase() throws Exception {
         String url = "/getallcase";
-        List<String> expectResKeywords = Arrays.asList("provinceOrState","countryOrRegion",
-                "lastUpdated","confirmed","deaths","recovered","latitude","longitude");
-        RequestTestTemplate.testMvcRequest(webApplicationContext,url,null,
-                200,expectResKeywords);
+        List<String> expectResKeywords = Arrays.asList("provinceOrState", "countryOrRegion",
+                "lastUpdated", "confirmed", "deaths", "recovered", "latitude", "longitude");
+        RequestTestTemplate.testMvcRequest(webApplicationContext, url, null,
+                200, expectResKeywords);
     }
 
 }
