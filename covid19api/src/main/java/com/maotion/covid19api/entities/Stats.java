@@ -1,6 +1,7 @@
 package com.maotion.covid19api.entities;
 
 
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.IndexDirection;
@@ -10,6 +11,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Data
 @Document(collection = "stats")
 public class Stats {
 
@@ -25,6 +28,8 @@ public class Stats {
     private Double latitude;
     private Double longitude;
     private List<News> news = new ArrayList<>();
+
+    public Stats(){}
 
     @PersistenceConstructor
     public Stats(String provinceOrState, String countryOrRegion, String lastUpdated, Long confirmed, Long deaths, Long recovered, Double latitude, Double longitude, List<News> news) {

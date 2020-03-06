@@ -1,6 +1,6 @@
 package com.maotion.covid19api.persistence;
 
-import com.maotion.covid19api.entities.Case;
+import com.maotion.covid19api.entities.Stats;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -22,14 +22,16 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 @Configuration
 public class BatchConfig {
 
-    @Autowired
     private JobBuilderFactory jobBuilderFactory;
-
-    @Autowired
     private StepBuilderFactory stepBuilderFactory;
+    private MongoTemplate mongoTemplate;
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    public BatchConfig(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, MongoTemplate mongoTemplate) {
+        this.jobBuilderFactory = jobBuilderFactory;
+        this.stepBuilderFactory = stepBuilderFactory;
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Bean
     public Job readCSVFile() {
@@ -39,30 +41,30 @@ public class BatchConfig {
 
     @Bean
     public Step step1() {
-        return stepBuilderFactory.get("step1").<Case,Case>chunk(10).reader(reader())
+        return stepBuilderFactory.get("step1").<Stats,Stats>chunk(10).reader(reader())
                 .writer(writer()).build();
     }
 
     @Bean
-    public FlatFileItemReader<Case> reader() {
-        FlatFileItemReader<Case> reader = new FlatFileItemReader<>();
+    public FlatFileItemReader<Stats> reader() {
+        FlatFileItemReader<Stats> reader = new FlatFileItemReader<>();
         reader.setResource(new ClassPathResource("daily-data.csv"));
-        reader.setLineMapper(new DefaultLineMapper<Case>() {{
+        reader.setLineMapper(new DefaultLineMapper<Stats>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
-                setNames(new String[]{"provinceOrState", "countryOrRegion", "lastUpdated",
-                        "confirmed", "deaths", "recovered", "latitude", "longitude"});
+                setNames("provinceOrState", "countryOrRegion", "lastUpdated",
+                        "confirmed", "deaths", "recovered", "latitude", "longitude");
 
             }});
-            setFieldSetMapper(new BeanWrapperFieldSetMapper<Case>() {{
-                setTargetType(Case.class);
+            setFieldSetMapper(new BeanWrapperFieldSetMapper<Stats>() {{
+                setTargetType(Stats.class);
             }});
         }});
         return reader;
     }
 
     @Bean
-    public MongoItemWriter<Case> writer() {
-        MongoItemWriter<Case> writer = new MongoItemWriter<Case>();
+    public MongoItemWriter<Stats> writer() {
+        MongoItemWriter<Stats> writer = new MongoItemWriter<>();
         writer.setTemplate(mongoTemplate);
         writer.setCollection("stats");
         return writer;
