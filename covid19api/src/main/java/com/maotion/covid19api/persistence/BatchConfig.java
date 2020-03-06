@@ -48,6 +48,7 @@ public class BatchConfig {
     @Bean
     public FlatFileItemReader<Stats> reader() {
         FlatFileItemReader<Stats> reader = new FlatFileItemReader<>();
+        reader.setLinesToSkip(1);
         reader.setResource(new ClassPathResource("daily-data.csv"));
         reader.setLineMapper(new DefaultLineMapper<Stats>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
