@@ -7,21 +7,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CSVDownloaderTest {
-    String baseUrl = SourceUrlGenerator.baseUrl;
-    String testingUrl = String.format(baseUrl, "02-29-2020");
-//    private final String targetFilePath = "src/main/resources/test-daily-data.csv";
 
     @Test
     public void testDownloadCSV(@TempDir Path tempDir) throws IOException {
-
+        String baseUrl = SourceUrlGenerator.baseUrl;
+        String testingUrl = String.format(baseUrl, "02-29-2020");
         Path downloadedCSV = tempDir.resolve("test-daily-data.csv");
         CSVDownloader downloader = new CSVDownloader();
         downloader.downloadCSV(testingUrl, downloadedCSV.toString());
 
-        assertTrue(Files.exists(downloadedCSV));
-        assertTrue(Files.readAllLines(downloadedCSV).contains("2020-02-29T"));
+        assertThat(Files.exists(downloadedCSV)).isTrue();
+        assertThat(Files.readAllLines(downloadedCSV).toString()).contains("2020-02-29T", "China", "Japan", "US");
     }
 }

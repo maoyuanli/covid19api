@@ -1,6 +1,8 @@
 package com.maotion.covid19api.persistence;
 
 import com.maotion.covid19api.entities.Stats;
+import com.maotion.covid19api.utils.CSVDownloader;
+import com.maotion.covid19api.utils.SourceUrlGenerator;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -18,6 +20,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.io.IOException;
+
 @EnableBatchProcessing
 @Configuration
 public class BatchConfig {
@@ -25,16 +29,22 @@ public class BatchConfig {
     private JobBuilderFactory jobBuilderFactory;
     private StepBuilderFactory stepBuilderFactory;
     private MongoTemplate mongoTemplate;
+    private SourceUrlGenerator sourceUrlGenerator;
+    private CSVDownloader csvDownloader;
 
     @Autowired
-    public BatchConfig(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, MongoTemplate mongoTemplate) {
+    public BatchConfig(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory,
+                       MongoTemplate mongoTemplate, SourceUrlGenerator sourceUrlGenerator, CSVDownloader csvDownloader) {
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
         this.mongoTemplate = mongoTemplate;
+        this.sourceUrlGenerator =sourceUrlGenerator;
+        this.csvDownloader = csvDownloader;
     }
 
     @Bean
-    public Job readCSVFile() {
+    public Job readCSVFile() throws IOException {
+        this.csvDownloader.downloadCSV(this.sourceUrlGenerator.getValidUrl(), "src/main/resources/daily-data.csv");
         this.mongoTemplate.dropCollection("stats");
         return jobBuilderFactory.get("readCSVFile").incrementer(new RunIdIncrementer()).start(step1())
                 .build();
