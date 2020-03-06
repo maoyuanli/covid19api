@@ -35,6 +35,7 @@ public class BatchConfig {
 
     @Bean
     public Job readCSVFile() {
+        this.mongoTemplate.dropCollection("stats");
         return jobBuilderFactory.get("readCSVFile").incrementer(new RunIdIncrementer()).start(step1())
                 .build();
     }
