@@ -19,10 +19,10 @@ public class Stats {
     private String id;
 
     @CsvBindByPosition(position = 0)
-    private String provinceOrState;
+    private String province;
 
     @CsvBindByPosition(position = 1)
-    private String countryOrRegion;
+    private String country;
 
     @CsvBindByPosition(position = 2)
     private String lastUpdated;
@@ -48,9 +48,9 @@ public class Stats {
     }
 
     @PersistenceConstructor
-    public Stats(String provinceOrState, String countryOrRegion, String lastUpdated, Long confirmed, Long deaths, Long recovered, Double latitude, Double longitude, List<News> news) {
-        this.provinceOrState = provinceOrState;
-        this.countryOrRegion = countryOrRegion;
+    public Stats(String province, String country, String lastUpdated, Long confirmed, Long deaths, Long recovered, Double latitude, Double longitude, List<News> news) {
+        this.province = province;
+        this.country = country;
         this.lastUpdated = lastUpdated;
         this.confirmed = confirmed;
         this.deaths = deaths;
@@ -62,20 +62,20 @@ public class Stats {
         }
     }
 
-    public String getProvinceOrState() {
-        return provinceOrState;
+    public String getProvince() {
+        return province;
     }
 
-    public void setProvinceOrState(String provinceOrState) {
-        this.provinceOrState = provinceOrState;
+    public void setProvince(String province) {
+        this.province = province;
     }
 
-    public String getCountryOrRegion() {
-        return countryOrRegion;
+    public String getCountry() {
+        return country;
     }
 
-    public void setCountryOrRegion(String countryOrRegion) {
-        this.countryOrRegion = countryOrRegion;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getLastUpdated() {

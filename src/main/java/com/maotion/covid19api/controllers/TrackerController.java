@@ -29,7 +29,12 @@ public class TrackerController {
     }
 
     @DeleteMapping("deletecase")
-    public void delete(@RequestParam String country) {
-        this.trackerService.delete(country);
+    public List<Stats> delete(@RequestParam String country) {
+        return this.trackerService.delete(country);
+    }
+
+    @GetMapping("findbycountry/{country}")
+    public List<Stats> findByCountry(@PathVariable String country) {
+        return this.trackerService.findByCountry(country);
     }
 }
