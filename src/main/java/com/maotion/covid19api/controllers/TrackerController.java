@@ -28,4 +28,8 @@ public class TrackerController {
         return this.trackerService.findAll();
     }
 
+    @DeleteMapping("deletecase")
+    public void delete(@RequestParam String country){
+        this.trackerService.delete(country);
+    }
 }
