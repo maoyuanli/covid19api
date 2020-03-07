@@ -1,0 +1,48 @@
+package com.maotion.covid19api.persistence;
+
+import com.maotion.covid19api.entities.Stats;
+import com.maotion.covid19api.utils.CSVDownloader;
+import com.maotion.covid19api.utils.SourceUrlGenerator;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Component;
+
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
+@Component
+public class CsvMongoInject implements CommandLineRunner {
+    private static final String CSV_FILE = "src/main/resources/daily-data.csv";
+
+    private MongoTemplate mongoTemplate;
+    private SourceUrlGenerator sourceUrlGenerator;
+    private CSVDownloader csvDownloader;
+
+    @Autowired
+    public CsvMongoInject(MongoTemplate mongoTemplate, SourceUrlGenerator sourceUrlGenerator, CSVDownloader csvDownloader) {
+        this.mongoTemplate = mongoTemplate;
+        this.sourceUrlGenerator = sourceUrlGenerator;
+        this.csvDownloader = csvDownloader;
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+
+        this.csvDownloader.downloadCSV(this.sourceUrlGenerator.getValidUrl(), CSV_FILE);
+        this.mongoTemplate.dropCollection(Stats.class);
+
+        Reader reader = Files.newBufferedReader(Paths.get(CSV_FILE));
+        CsvToBean csvToBean = new CsvToBeanBuilder(reader)
+                .withType(Stats.class).withSkipLines(1)
+                .withIgnoreLeadingWhiteSpace(true)
+                .build();
+        List<Stats> statsList = csvToBean.parse();
+        mongoTemplate.insertAll(statsList);
+        reader.close();
+    }
+}

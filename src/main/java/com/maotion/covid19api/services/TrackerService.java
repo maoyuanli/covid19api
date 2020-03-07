@@ -19,8 +19,8 @@ public class TrackerService {
         this.mongoTemplate = mongoTemplate;
     }
 
-    public Stats save(Stats stats) {
-        return mongoTemplate.save(stats);
+    public Stats insert(Stats stats) {
+        return mongoTemplate.insert(stats);
     }
 
     public List<Stats> findAll() {

@@ -20,7 +20,7 @@ public class TrackerController {
 
     @PostMapping("reportcase")
     public Stats reportCase(@RequestBody Stats stats) {
-        return this.trackerService.save(stats);
+        return this.trackerService.insert(stats);
     }
 
     @GetMapping("getallcase")
@@ -29,7 +29,7 @@ public class TrackerController {
     }
 
     @DeleteMapping("deletecase")
-    public void delete(@RequestParam String country){
+    public void delete(@RequestParam String country) {
         this.trackerService.delete(country);
     }
 }

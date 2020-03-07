@@ -1,11 +1,10 @@
 package com.maotion.covid19api.entities;
 
 
+import com.opencsv.bean.CsvBindByPosition;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.mongodb.core.index.IndexDirection;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -18,15 +17,31 @@ public class Stats {
 
     @Id
     private String id;
+
+    @CsvBindByPosition(position = 0)
     private String provinceOrState;
-    @Indexed(direction = IndexDirection.ASCENDING)
+
+    @CsvBindByPosition(position = 1)
     private String countryOrRegion;
+
+    @CsvBindByPosition(position = 2)
     private String lastUpdated;
+
+    @CsvBindByPosition(position = 3)
     private Long confirmed;
+
+    @CsvBindByPosition(position = 4)
     private Long deaths;
+
+    @CsvBindByPosition(position = 5)
     private Long recovered;
+
+    @CsvBindByPosition(position = 6)
     private Double latitude;
+
+    @CsvBindByPosition(position = 7)
     private Double longitude;
+
     private List<News> news = new ArrayList<>();
 
     public Stats() {

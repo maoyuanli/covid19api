@@ -20,7 +20,7 @@ public class SourceUrlGenerator {
     public String getValidUrl() throws IOException {
         LocalDate curDate = getToday();
         String csvUrl = finishUrlWithDate(curDate);
-        while (!csvAvailable(csvUrl)){
+        while (!csvAvailable(csvUrl)) {
             curDate = curDate.minusDays(1);
             csvUrl = finishUrlWithDate(curDate);
         }
@@ -29,11 +29,11 @@ public class SourceUrlGenerator {
 
     private String finishUrlWithDate(LocalDate date) {
         String dateStrPattern = "MM-dd-yyyy";
-        String todayStr = formatLocalDate(date,dateStrPattern);
-        return String.format(baseUrl,todayStr);
+        String todayStr = formatLocalDate(date, dateStrPattern);
+        return String.format(baseUrl, todayStr);
     }
 
-    private String formatLocalDate(LocalDate localDate, String pattern){
+    private String formatLocalDate(LocalDate localDate, String pattern) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
         return dateTimeFormatter.format(localDate);
     }
