@@ -1,7 +1,5 @@
 package com.maotion.covid19api.utils;
 
-import org.springframework.stereotype.Component;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +7,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-@Component
+//@Component
 public class CSVDownloader {
 
     public void downloadCSV(String sourceUrl, String targetFilePath) throws IOException {
