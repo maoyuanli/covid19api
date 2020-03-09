@@ -1,3 +1,10 @@
+package com.maotion.covid19api.batch;
+
+public class CsvMongoBatch {
+
+}
+
+
 //package com.maotion.covid19api.persistence;
 //
 //import com.maotion.covid19api.entities.Stats;
