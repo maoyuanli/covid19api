@@ -13,7 +13,7 @@ class CSVDownloaderTest {
 
     @Test
     public void testDownloadCSV(@TempDir Path tempDir) throws IOException {
-        String baseUrl = SourceUrlGenerator.baseUrl;
+        String baseUrl = DailyReportUrlGenerator.baseUrl;
         String testingUrl = String.format(baseUrl, "02-29-2020");
         Path downloadedCSV = tempDir.resolve("test-daily-data.csv");
         CSVDownloader downloader = new CSVDownloader();

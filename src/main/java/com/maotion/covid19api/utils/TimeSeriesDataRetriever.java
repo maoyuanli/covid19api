@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 @Component
-public class CSVColumnCounter {
+public class TimeSeriesDataRetriever {
 
     public final String TIME_SERIES_CONFIRMED =
             "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv";
@@ -20,5 +20,16 @@ public class CSVColumnCounter {
         CSVReader csvReader = new CSVReader(new InputStreamReader(input));
         String[] headers = csvReader.readNext();
         return headers;
+    }
+
+    public int[] locatePriorDaysColumns(int n) throws IOException {
+        int numOfColumns = getHeaders().length;
+        int[] dayCounts = new int[n + 2];
+        for (int i = 0; i < n; i++) {
+            dayCounts[i] = numOfColumns - i - 1;
+        }
+        dayCounts[n] = 0;
+        dayCounts[n + 1] = 1;
+        return dayCounts;
     }
 }

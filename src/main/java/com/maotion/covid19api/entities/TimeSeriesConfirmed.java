@@ -18,4 +18,5 @@ public class TimeSeriesConfirmed {
     private Long prior3Day;
     private Long prior4Day;
     private Long prior5Day;
+
 }

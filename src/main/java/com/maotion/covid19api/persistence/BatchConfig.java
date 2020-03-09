@@ -2,7 +2,7 @@ package com.maotion.covid19api.persistence;
 
 
 import com.maotion.covid19api.entities.TimeSeriesConfirmed;
-import com.maotion.covid19api.utils.CSVColumnCounter;
+import com.maotion.covid19api.utils.TimeSeriesDataRetriever;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -29,30 +29,21 @@ public class BatchConfig {
     private JobBuilderFactory jobBuilderFactory;
     private StepBuilderFactory stepBuilderFactory;
     private MongoTemplate mongoTemplate;
-    private CSVColumnCounter csvColumnCounter;
-
-    private int[] countPriorDays(int n) throws IOException {
-        int numOfColumns = csvColumnCounter.getHeaders().length;
-        int[] dayCounts = new int[n];
-        for (int i = 0; i < n; i++) {
-            dayCounts[i] = numOfColumns - i - 1;
-        }
-        return dayCounts;
-    }
+    private TimeSeriesDataRetriever timeSeriesDataRetriever;
 
     @Autowired
     public BatchConfig(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory,
-                       MongoTemplate mongoTemplate, CSVColumnCounter csvColumnCounter) {
+                       MongoTemplate mongoTemplate, TimeSeriesDataRetriever timeSeriesDataRetriever) {
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
         this.mongoTemplate = mongoTemplate;
-        this.csvColumnCounter = csvColumnCounter;
+        this.timeSeriesDataRetriever = timeSeriesDataRetriever;
     }
 
     @Bean
     public Job readCSVFile() throws IOException {
         this.mongoTemplate.dropCollection("ts_confirmed");
-        return jobBuilderFactory.get("readCSVFile").incrementer(new RunIdIncrementer()).start(step1())
+        return jobBuilderFactory.get("readTimeSeriesConfirmed").incrementer(new RunIdIncrementer()).start(step1())
                 .build();
     }
 
@@ -66,16 +57,11 @@ public class BatchConfig {
     public FlatFileItemReader<TimeSeriesConfirmed> reader() throws IOException {
         FlatFileItemReader<TimeSeriesConfirmed> reader = new FlatFileItemReader<>();
         reader.setLinesToSkip(1);
-        reader.setResource(new UrlResource(csvColumnCounter.TIME_SERIES_CONFIRMED));
+        reader.setResource(new UrlResource(timeSeriesDataRetriever.TIME_SERIES_CONFIRMED));
         reader.setLineMapper(new DefaultLineMapper<TimeSeriesConfirmed>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
                 setNames("province", "country", "prior5Day", "prior4Day", "prior3Day", "prior2Day", "prior1Day");
-                setIncludedFields(0, 1,
-                        countPriorDays(5)[0],
-                        countPriorDays(5)[1],
-                        countPriorDays(5)[2],
-                        countPriorDays(5)[3],
-                        countPriorDays(5)[4]);
+                setIncludedFields(timeSeriesDataRetriever.locatePriorDaysColumns(5));
             }});
             setFieldSetMapper(new BeanWrapperFieldSetMapper<TimeSeriesConfirmed>() {{
                 setTargetType(TimeSeriesConfirmed.class);

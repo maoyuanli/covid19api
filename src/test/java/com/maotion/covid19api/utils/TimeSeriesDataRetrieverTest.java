@@ -6,11 +6,11 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CSVColumnCounterTest {
+class TimeSeriesDataRetrieverTest {
 
     @Test
     public void testCSVHeader() throws IOException {
-        CSVColumnCounter counter = new CSVColumnCounter();
+        TimeSeriesDataRetriever counter = new TimeSeriesDataRetriever();
         String[] headersArray = counter.getHeaders();
         assertThat(headersArray.length).isGreaterThan(50);
         assertThat(headersArray).contains("Province/State", "Country/Region", "1/22/20", "3/8/20");

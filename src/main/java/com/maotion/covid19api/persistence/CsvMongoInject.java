@@ -1,7 +1,7 @@
 package com.maotion.covid19api.persistence;
 
 import com.maotion.covid19api.entities.Stats;
-import com.maotion.covid19api.utils.SourceUrlGenerator;
+import com.maotion.covid19api.utils.DailyReportUrlGenerator;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +19,20 @@ import java.util.List;
 public class CsvMongoInject implements CommandLineRunner {
 
     private MongoTemplate mongoTemplate;
-    private SourceUrlGenerator sourceUrlGenerator;
+    private DailyReportUrlGenerator dailyReportUrlGenerator;
 
 
     @Autowired
-    public CsvMongoInject(MongoTemplate mongoTemplate, SourceUrlGenerator sourceUrlGenerator) {
+    public CsvMongoInject(MongoTemplate mongoTemplate, DailyReportUrlGenerator dailyReportUrlGenerator) {
         this.mongoTemplate = mongoTemplate;
-        this.sourceUrlGenerator = sourceUrlGenerator;
+        this.dailyReportUrlGenerator = dailyReportUrlGenerator;
     }
 
     @Override
     public void run(String... args) throws Exception {
 
         this.mongoTemplate.dropCollection(Stats.class);
-        InputStream input = new URL(this.sourceUrlGenerator.getValidUrl()).openStream();
+        InputStream input = new URL(this.dailyReportUrlGenerator.getValidUrl()).openStream();
         Reader reader = new InputStreamReader(input);
         CsvToBean csvToBean = new CsvToBeanBuilder(reader)
                 .withType(Stats.class).withSkipLines(1)
