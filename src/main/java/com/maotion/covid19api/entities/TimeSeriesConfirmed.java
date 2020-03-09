@@ -13,6 +13,9 @@ public class TimeSeriesConfirmed {
     private String id;
     private String province;
     private String country;
-    private String dailyUpdates;
-
+    private Long prior1Day;
+    private Long prior2Day;
+    private Long prior3Day;
+    private Long prior4Day;
+    private Long prior5Day;
 }
