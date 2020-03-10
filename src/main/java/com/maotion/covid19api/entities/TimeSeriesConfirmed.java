@@ -20,7 +20,8 @@ public class TimeSeriesConfirmed {
     private Long prior4Day;
     private Long prior5Day;
 
-    public TimeSeriesConfirmed(){}
+    public TimeSeriesConfirmed() {
+    }
 
     @PersistenceConstructor
     public TimeSeriesConfirmed(String province, String country, Long prior1Day, Long prior2Day, Long prior3Day, Long prior4Day, Long prior5Day) {

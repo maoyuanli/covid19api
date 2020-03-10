@@ -42,7 +42,7 @@ public class TimeSeriesDataBatch {
 
     @Bean
     public Job readCSVFile() throws IOException {
-        this.mongoTemplate.dropCollection("ts_confirmed");
+        this.mongoTemplate.dropCollection(TimeSeriesConfirmed.class);
         return jobBuilderFactory.get("readTimeSeriesConfirmed").incrementer(new RunIdIncrementer()).start(step1())
                 .build();
     }
