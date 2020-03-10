@@ -24,7 +24,7 @@ import java.io.IOException;
 
 @EnableBatchProcessing
 @Configuration
-public class BatchConfig {
+public class TimeSeriesDataBatch {
 
     private JobBuilderFactory jobBuilderFactory;
     private StepBuilderFactory stepBuilderFactory;
@@ -32,8 +32,8 @@ public class BatchConfig {
     private TimeSeriesDataRetriever timeSeriesDataRetriever;
 
     @Autowired
-    public BatchConfig(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory,
-                       MongoTemplate mongoTemplate, TimeSeriesDataRetriever timeSeriesDataRetriever) {
+    public TimeSeriesDataBatch(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory,
+                               MongoTemplate mongoTemplate, TimeSeriesDataRetriever timeSeriesDataRetriever) {
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
         this.mongoTemplate = mongoTemplate;

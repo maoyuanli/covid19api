@@ -16,14 +16,14 @@ import java.net.URL;
 import java.util.List;
 
 @Component
-public class CsvMongoInject implements CommandLineRunner {
+public class DailyStatsCMDRunner implements CommandLineRunner {
 
     private MongoTemplate mongoTemplate;
     private DailyReportUrlGenerator dailyReportUrlGenerator;
 
 
     @Autowired
-    public CsvMongoInject(MongoTemplate mongoTemplate, DailyReportUrlGenerator dailyReportUrlGenerator) {
+    public DailyStatsCMDRunner(MongoTemplate mongoTemplate, DailyReportUrlGenerator dailyReportUrlGenerator) {
         this.mongoTemplate = mongoTemplate;
         this.dailyReportUrlGenerator = dailyReportUrlGenerator;
     }
