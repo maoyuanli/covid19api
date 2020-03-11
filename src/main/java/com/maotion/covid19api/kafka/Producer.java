@@ -31,7 +31,7 @@ public class Producer {
             @Override
             public void onCompletion(RecordMetadata recordMetadata, Exception e) {
                 if (e == null) {
-                    LOGGER.debug(String.format("-------\nTopic: %s \nPartition: %s " +
+                    LOGGER.debug(String.format("\n-------\nTopic: %s \nPartition: %s " +
                                     "\nOffset: %s \nTimestamp: %s\n-------",
                             recordMetadata.topic(),
                             recordMetadata.partition(),
