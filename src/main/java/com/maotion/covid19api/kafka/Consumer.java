@@ -58,7 +58,7 @@ public class Consumer {
 //            properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, GROUP);
             properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
-            consumer = new KafkaConsumer<String, String>(properties);
+            consumer = new KafkaConsumer<>(properties);
 //            consumer.subscribe(Arrays.asList(TOPIC));
             consumer.assign(Arrays.asList(topicPartitiontoRead));
             consumer.seek(topicPartitiontoRead, offsetToRead);
@@ -75,8 +75,8 @@ public class Consumer {
                         LOGGER.debug(String.format("\n-----\nKey: %s\nValue: %s\nPartition: %s\nOffiset: %s\n-----",
                                 record.key(), record.value(), record.partition(), record.offset()));
                         numOfMsgReadSoFar += 1;
-                        if(numOfMsgReadSoFar>=numOfMsgToRead){
-                            keepReading =false;
+                        if (numOfMsgReadSoFar >= numOfMsgToRead) {
+                            keepReading = false;
                         }
                     });
                 }
