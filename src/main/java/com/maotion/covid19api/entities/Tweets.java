@@ -1,22 +1,30 @@
 package com.maotion.covid19api.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import java.util.Map;
 
 @Document(collection = "tweets")
 public class Tweets {
     @Id
     private String id;
+
+    @Field("user.screen_name")
+    private String userName;
+
     @Field("created_at")
     private String createdAt;
+
     @Field("text")
     private String text;
-    @Field("user")
-    private Map<String,String> user;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getCreatedAt() {
         return createdAt;
@@ -34,11 +42,4 @@ public class Tweets {
         this.text = text;
     }
 
-    public Map<String, String> getUser() {
-        return user;
-    }
-
-    public void setUser(Map<String, String> user) {
-        this.user = user;
-    }
 }

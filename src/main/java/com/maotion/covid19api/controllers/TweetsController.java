@@ -19,7 +19,7 @@ public class TweetsController {
     }
 
     @GetMapping("getalltweets")
-    public List<Tweets> getAllTweets(){
+    public List<Tweets> getAllTweets() {
         return tweetsService.findAll();
     }
 }

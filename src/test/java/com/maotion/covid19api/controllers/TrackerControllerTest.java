@@ -83,9 +83,9 @@ class TrackerControllerTest {
 
     @Test
     public void testDeleteByCountry() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/deletecase/?country=US"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/deletecase/?country=Italy"))
                 .andExpect(status().isOk())
                 .andExpect(mvcResult -> assertThat(mvcResult.getResponse().getContentAsString())
-                        .contains("Los Angeles", "San Francisco", "New York County, NY", "confirmed", "lastUpdated"));
+                        .contains("id", "province", "country", "confirmed", "lastUpdated"));
     }
 }

@@ -31,7 +31,7 @@ public class TwitterProducer {
     private static final String BOOTSTRAP_SERVERS = "127.0.0.1:9092";
     private static final Logger LOGGER = LogManager.getLogger(TwitterProducer.class);
     List<String> terms = Lists.newArrayList("coronavirus", "covid19", "covid-19");
-    private static int tweetsCount = 20;
+    private static int tweetsCount = 100;
 
     public TwitterProducer() {
     }

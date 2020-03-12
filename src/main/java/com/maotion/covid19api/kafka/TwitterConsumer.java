@@ -25,7 +25,7 @@ public class TwitterConsumer {
     private static final Logger LOGGER = LogManager.getLogger(TwitterConsumer.class);
     private static final String GROUP = "group1";
     private static final String TOPIC = "twitter_topic";
-    private static final int numOfMsgToRead = 30;
+    private static final int numOfMsgToRead = 100;
     private static final CountDownLatch LATCH = new CountDownLatch(1);
     private static int numOfMsgReadSoFar = 0;
     private static boolean keepReading = true;
