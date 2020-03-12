@@ -11,7 +11,9 @@ import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint;
 import com.twitter.hbc.core.processor.StringDelimitedProcessor;
 import com.twitter.hbc.httpclient.auth.Authentication;
 import com.twitter.hbc.httpclient.auth.OAuth1;
-import org.apache.kafka.clients.producer.*;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +28,8 @@ public class TwitterProducer {
 
     private static final String BOOTSTRAP_SERVERS = "127.0.0.1:9092";
     private static final Logger LOGGER = LogManager.getLogger(TwitterProducer.class);
-    List<String> terms = Lists.newArrayList("coronavirus covid19 covid-19 canada");
+    List<String> terms = Lists.newArrayList("coronavirus", "covid19", "covid-19");
+    private static int tweetsCount = 20;
 
     public TwitterProducer() {
     }
@@ -36,7 +39,7 @@ public class TwitterProducer {
         BlockingQueue<String> msgQueue = new LinkedBlockingDeque<>(1000);
         Client hbClient = createTwitterClient(msgQueue);
         hbClient.connect();
-        while (!hbClient.isDone()) {
+        while (!hbClient.isDone() && tweetsCount > 0) {
             String msg = null;
             try {
                 msg = msgQueue.poll(5, TimeUnit.SECONDS);
@@ -46,6 +49,7 @@ public class TwitterProducer {
             }
             if (msg != null) {
                 LOGGER.debug(String.format("\nTweet : %s\n", msg));
+                tweetsCount--;
                 kafkaProducer.send(new ProducerRecord<>("twitter_topic", null, msg), (recordMetadata, e) -> {
                     if (e != null) {
                         LOGGER.debug(String.format("Twitter Producer Error : %s", e.getMessage()));
@@ -70,7 +74,7 @@ public class TwitterProducer {
         Authentication hosebirdAuth = new OAuth1(apiKey, apiSecret, accessToken, accessSecret);
 
         ClientBuilder builder = new ClientBuilder()
-                .name("Hosebird-Client-01")
+                .name("tweet-client-covid19")
                 .hosts(hosebirdHosts)
                 .authentication(hosebirdAuth)
                 .endpoint(hosebirdEndpoint)
