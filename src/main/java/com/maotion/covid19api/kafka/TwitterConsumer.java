@@ -11,17 +11,18 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
-
-public class Consumer {
+@Component
+public class TwitterConsumer {
 
     private static final String BOOTSTRAP_SERVERS = "127.0.0.1:9092";
-    private static final Logger LOGGER = LogManager.getLogger(Consumer.class);
+    private static final Logger LOGGER = LogManager.getLogger(TwitterConsumer.class);
     private static final String GROUP = "group1";
     private static final String TOPIC = "twitter_topic";
     private static final int numOfMsgToRead = 30;
@@ -29,8 +30,7 @@ public class Consumer {
     private static int numOfMsgReadSoFar = 0;
     private static boolean keepReading = true;
 
-    public static void main(String[] args) throws InterruptedException {
-
+    public void run() throws InterruptedException {
 
         ConsumerRunnable consumerRunnable = new ConsumerRunnable(LATCH);
         Thread thread = new Thread(consumerRunnable);
@@ -49,7 +49,6 @@ public class Consumer {
 
 
     public static class ConsumerRunnable implements Runnable {
-
         private CountDownLatch latch;
         private KafkaConsumer<String, String> consumer;
 
@@ -71,6 +70,8 @@ public class Consumer {
         public void run() {
             MongoClient mongoClient = new MongoClient("localhost", 27017);
             MongoDatabase db = mongoClient.getDatabase("covid19");
+            db.getCollection("tweets").drop();
+            db.createCollection("tweets");
             MongoCollection collection = db.getCollection("tweets");
             try {
                 while (keepReading) {
