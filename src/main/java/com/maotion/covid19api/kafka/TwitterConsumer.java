@@ -11,6 +11,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -21,7 +22,8 @@ import java.util.concurrent.CountDownLatch;
 @Component
 public class TwitterConsumer {
 
-    private static final String BOOTSTRAP_SERVERS = "127.0.0.1:9092";
+    @Value("${bootstrap_server}")
+    private String bootstrapServer;
     private static final Logger LOGGER = LogManager.getLogger(TwitterConsumer.class);
     private static final String GROUP = "group1";
     private static final String TOPIC = "twitter_topic";
@@ -48,7 +50,7 @@ public class TwitterConsumer {
     }
 
 
-    public static class ConsumerRunnable implements Runnable {
+    public class ConsumerRunnable implements Runnable {
         private CountDownLatch latch;
         private KafkaConsumer<String, String> consumer;
 
@@ -56,7 +58,7 @@ public class TwitterConsumer {
             this.latch = latch;
 
             Properties properties = new Properties();
-            properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+            properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
             properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
             properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
             properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, GROUP);

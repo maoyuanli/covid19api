@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "bootstrap",
+      "type": "java.lang.String",
+      "description": "Description for bootstrap."
+    }
+  ]
+}

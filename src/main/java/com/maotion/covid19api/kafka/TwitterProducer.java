@@ -17,6 +17,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,7 +29,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class TwitterProducer {
 
-    private static final String BOOTSTRAP_SERVERS = "127.0.0.1:9092";
+    @Value("${bootstrap_server}")
+    private String bootstrapServer;
     private static final Logger LOGGER = LogManager.getLogger(TwitterProducer.class);
     List<String> terms = Lists.newArrayList("coronavirus", "covid19", "covid-19");
     private static int tweetsCount = 100;
@@ -87,7 +89,7 @@ public class TwitterProducer {
 
     public KafkaProducer<String, String> createKafkaProducer() {
         Properties properties = new Properties();
-        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         return new KafkaProducer<>(properties);
