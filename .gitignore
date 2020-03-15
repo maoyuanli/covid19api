@@ -29,7 +29,7 @@ build/
 
 ### VS Code ###
 .vscode/
-daily-data.csv
-sample-data.csv
 token.json
+*.properties
+gitchain.sh
 
