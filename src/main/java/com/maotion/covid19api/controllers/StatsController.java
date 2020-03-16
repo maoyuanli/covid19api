@@ -1,7 +1,7 @@
 package com.maotion.covid19api.controllers;
 
 import com.maotion.covid19api.entities.Stats;
-import com.maotion.covid19api.services.TrackerService;
+import com.maotion.covid19api.services.StatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,32 +9,32 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-public class TrackerController {
+public class StatsController {
 
-    private TrackerService trackerService;
+    private StatsService statsService;
 
     @Autowired
-    public TrackerController(TrackerService trackerService) {
-        this.trackerService = trackerService;
+    public StatsController(StatsService statsService) {
+        this.statsService = statsService;
     }
 
     @PostMapping("reportcase")
     public Stats reportCase(@RequestBody Stats stats) {
-        return this.trackerService.insert(stats);
+        return this.statsService.insert(stats);
     }
 
     @GetMapping("getallcase")
     public List<Stats> getAllCase() {
-        return this.trackerService.findAll();
+        return this.statsService.findAll();
     }
 
     @DeleteMapping("deletecase")
     public List<Stats> delete(@RequestParam String country) {
-        return this.trackerService.delete(country);
+        return this.statsService.delete(country);
     }
 
     @GetMapping("findbycountry/{country}")
     public List<Stats> findByCountry(@PathVariable String country) {
-        return this.trackerService.findByCountry(country);
+        return this.statsService.findByCountry(country);
     }
 }
