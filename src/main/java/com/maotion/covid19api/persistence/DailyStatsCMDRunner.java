@@ -6,6 +6,7 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import java.net.URL;
 import java.util.List;
 
 @Component
+@Order(1)
 public class DailyStatsCMDRunner implements CommandLineRunner {
 
     private MongoTemplate mongoTemplate;

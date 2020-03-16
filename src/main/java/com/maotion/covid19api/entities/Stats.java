@@ -125,4 +125,20 @@ public class Stats {
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
+
+    @Override
+    public String toString() {
+        return "Stats{" +
+                "id='" + id + '\'' +
+                ", province='" + province + '\'' +
+                ", country='" + country + '\'' +
+                ", lastUpdated='" + lastUpdated + '\'' +
+                ", confirmed=" + confirmed +
+                ", deaths=" + deaths +
+                ", recovered=" + recovered +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", news=" + news +
+                '}';
+    }
 }
