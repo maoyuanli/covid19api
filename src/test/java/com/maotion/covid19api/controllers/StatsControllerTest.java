@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-class TrackerControllerTest {
+class StatsControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;

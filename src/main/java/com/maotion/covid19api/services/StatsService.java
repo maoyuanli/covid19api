@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TrackerService {
+public class StatsService {
 
     private StatsRepository statsRepository;
 
     @Autowired
-    public TrackerService(StatsRepository statsRepository) {
+    public StatsService(StatsRepository statsRepository) {
         this.statsRepository = statsRepository;
     }
 

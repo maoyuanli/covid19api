@@ -1,7 +1,7 @@
 package com.maotion.covid19api.mq;
 
 import com.maotion.covid19api.entities.Stats;
-import com.maotion.covid19api.services.TrackerService;
+import com.maotion.covid19api.services.StatsService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,23 +12,24 @@ import java.util.List;
 
 @Component
 @Order(2)
-public class MessageMQ implements CommandLineRunner {
+public class MQProducer implements CommandLineRunner {
 
     private RabbitTemplate rabbitTemplate;
-    private TrackerService trackerService;
+    private StatsService statsService;
 
     @Autowired
-    public MessageMQ (RabbitTemplate rabbitTemplate,TrackerService trackerService){
+    public MQProducer(RabbitTemplate rabbitTemplate, StatsService statsService) {
         this.rabbitTemplate = rabbitTemplate;
-        this.trackerService = trackerService;
+        this.statsService = statsService;
     }
 
 
     @Override
     public void run(String... args) throws Exception {
-        List<Stats> statsList = trackerService.findAll();
+        List<Stats> statsList = statsService.findAll();
         statsList.forEach(stats -> {
-            rabbitTemplate.convertAndSend("Covid19StatsExchange", "RKey19", stats.toString());
+            rabbitTemplate.convertAndSend(MQConfig.QUEUE_NAME, stats);
+//            rabbitTemplate.convertAndSend("Covid19StatsExchange", "RKey19", stats);
         });
     }
 }
